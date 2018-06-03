@@ -17,6 +17,7 @@ public class Perceptron {
     private int[] Xi;
     private int[] Wi;
     private int[] d;
+    private int[] temp;
     private double Net;
     private int y;
     private int[] IncrementoW;
@@ -24,6 +25,7 @@ public class Perceptron {
     private final int umbral = 1;
     private int tasaAprendizaje;
     private int cont = 0;
+    
     public Perceptron() {
         String ruta = "C:\\Users\\daayt\\Documents\\Maestria MCA1\\3er cuatrimestre\\Computo inteligente\\TRAIN.txt";
         Dataset = new dataset2(ruta);
@@ -35,6 +37,7 @@ public class Perceptron {
         Wi = llenaPesos();
         Xi = new int[64];
         d = new int[21];
+        temp = new int[21];
     }
     //gettersand setters
     public int getTasaAprendizaje() {
@@ -59,21 +62,25 @@ public class Perceptron {
         int[] d= new int[21];
         switch (name) {
             case "A":
+                 System.out.println("--A--");
+                 int c=0;
                 for (int i = 0; i < d.length; i++) {
                     if (i==0 || i==7 || i==14) {
-                        d[i]=1;
-                        System.out.println("SALIDA_desaeada: "+d[i]);
+                        d[i]=1; c++;
+                      //  System.out.println("SALIDA_desaeada: "+d[i]);
                     }else{
-                        d[i]=-1;
-                        System.out.println("SALIDA_desaeada: "+d[i]);
+                        d[i]=-1; c++;
+                        //System.out.println("SALIDA_desaeada: "+d[i]);
                     }
                 }
+                System.out.println("Contador: "+c);
 //                int[] dA = {1, -1, -1, -1, -1, -1, -1,//A1
 //                    1, -1, -1, -1, -1, -1, -1,//A2
 //                    1, -1, -1, -1, -1, -1, -1};//A3
                 break;
 
             case "B":
+               System.out.println("--B--");
                  for (int i = 0; i < d.length; i++) {
                     if (i==1 || i==8 || i==15) {
                         d[i]=1;
@@ -88,6 +95,7 @@ public class Perceptron {
 //                    -1, 1, -1, -1, -1, -1, -1};//B3
                 break;
             case "C":
+                System.out.println("--C--");
                  for (int i = 0; i < d.length; i++) {
                     if (i==2 || i==9 || i==16) {
                         d[i]=1;
@@ -102,6 +110,7 @@ public class Perceptron {
 //                    -1, -1, 1, -1, -1, -1, -1};//C3
                 break;
             case "D":
+                System.out.println("--D--");
                  for (int i = 0; i < d.length; i++) {
                     if (i==3 || i==10 || i==17) {
                         d[i]=1;
@@ -116,6 +125,7 @@ public class Perceptron {
 //                    -1, -1, -1, 1, -1, -1, -1};//D3
 //                break;
             case "E":
+                System.out.println("--E--");
                  for (int i = 0; i < d.length; i++) {
                     if (i==4 || i==11 || i==18) {
                         d[i]=1;
@@ -130,6 +140,7 @@ public class Perceptron {
 //                    -1, -1, -1, -1, 1, -1, -1};//E3
                 break;
             case "J":
+                System.out.println("--J--");
                  for (int i = 0; i < d.length; i++) {
                     if (i==5 || i==12 || i==19) {
                         d[i]=1;
@@ -144,6 +155,7 @@ public class Perceptron {
 //                    -1, -1, -1, -1, -1, 1, -1};//J3
                 break;
             case "K":
+                System.out.println("--K--");
                  for (int i = 0; i < d.length; i++) {
                     if (i==6 || i==13 || i==20) {
                         d[i]=1;
@@ -163,21 +175,33 @@ public class Perceptron {
         return d;
     }
     public void entrenamiento2(){//para la neurona A
+        String[] ids= {"A", "B", "C", "D", "E", "J", "K"};
         Funcion_OR = Dataset.readTxt2();
-        for (int x = 0; x < 21; x++) {
+        int c=0;
+        while (true ) {
+           
+            
+        
+      //  for (int x = 0; x < 21; x++) {
             for (int i = 0; i < Wi.length; i++) {
                 Xi[i] = Funcion_OR[i];
                 Net += Xi[i] * Wi[i];
             }
-            
+           // System.out.println("-----PATRON"+c+"-----");
+            System.out.println("Net: "+Net);
             y = funcion_escalon(Net);
             System.out.println("Y: "+y);
             d = creaNeurona("A");
             
-            IncrementoW2 = getIncrementos(1, d, y);
+            IncrementoW2 = getIncrementos(0, 1, d, y); 
             Wi = nuevosPesos(IncrementoW2);
-        }
-    
+        //}
+            System.out.println("-----Termina la Epoca "+c+"-----");
+            if (temp[0]==d[0]) {
+                break;
+            }
+        c++;
+    }
 //    public void entrenamiento() {//[1698][8], aqui debe recibir el umbral
 //        Funcion_OR = Dataset.readTxt();
 //        for (int i = 0; i < 1698; i++) {
@@ -206,16 +230,19 @@ public class Perceptron {
     }
 //    
     //devuelve un arreglo con los incrementos para cada neurona
-    public int[] getIncrementos(int alfa, int[] d, int y){
+    public int[] getIncrementos(int contador, int alfa, int[] d, int y){
         tasaAprendizaje = alfa;
-        for (int i = 0; i < IncrementoW.length; i++) {
-          
-                 IncrementoW[i] = tasaAprendizaje * (d[i] - y) * Xi[i];
+        for (int i = 0; i < IncrementoW.length; i++) {//incrementosW tiene 64 
+           //para frenar debo de tener un verctor temporal y compararlo con el vector de la salida deseada
+                 IncrementoW[i] = tasaAprendizaje * (d[contador] - (y)) * Xi[i];// getIncrementos(0, 1, d, -1);
 //                IncrementoW[1] = tasaAprendizaje * (d[i] - y) * Xi[1];
 //                IncrementoW[2] = tasaAprendizaje * (d[i] - y) * Xi[2];
-                System.out.println("Incrementos: "+IncrementoW);
-           
+              //  System.out.println("D[contador]: "+d[contador]);
+              
+                System.out.println("Incrementos: "+IncrementoW[i]);
+                System.out.println("Xi: "+Xi[i]);
         }
+        temp[contador]=y;
       return IncrementoW;     
     }
     
@@ -229,7 +256,7 @@ public class Perceptron {
             int[] NWi = new int[64];
            for (int i = 0; i < incrementos.length; i++) {
                   NWi[i] = Wi[i] + incrementos[i];
-                  System.out.println("N Pesos: "+NWi);
+                  System.out.println("N Pesos: "+NWi[i]);
 //                Wi[1] = Wi[1] + IncrementoW[1];
 //                Wi[2] = Wi[2] + IncrementoW[2];
         }

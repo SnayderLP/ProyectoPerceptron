@@ -279,6 +279,18 @@ public class dataset2 {
 //        return r3;
 //    }
 
+//    public void pasaDatos(){
+//        int[] a=new int[5];
+//        int[] b=new int[5];
+//        
+//        for (int i = 0; i < a.length; i++) {
+//            a[i]=i*2;
+//        }
+//        b=a;
+//        for (int i = 0; i < b.length; i++) {
+//            System.out.println(b[i]);
+//        }
+//    }
     public void enteros() {
         String[][] a = {{"1", "2", "3", "-5"}, {"-6", "7", "-8", "9"}};
         int[][] b = new int[2][8];

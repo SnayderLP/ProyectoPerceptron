@@ -15,7 +15,7 @@ public class ProyectoRedNeuronal {
       // ds.MiDataset();
       //ds.enteros();
         //System.out.println("n: "+ds.enteros());
-        
+//        ds.pasaDatos();
         //----------------------
        
      //   ds.readTxt2();
