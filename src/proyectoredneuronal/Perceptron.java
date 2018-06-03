@@ -25,8 +25,25 @@ public class Perceptron {
     private final int umbral = 1;
     private int tasaAprendizaje;
     private int cont = 0;
+    private String nombre;
+    private  boolean bandera = false;
     
     public Perceptron() {
+        String ruta = "C:\\Users\\daayt\\Documents\\Maestria MCA1\\3er cuatrimestre\\Computo inteligente\\TRAIN.txt";
+        Dataset = new dataset2(ruta);
+        Funcion_OR = new int[1698];
+        Wi = new int[64];
+        IncrementoW = new int[64];
+         IncrementoW2 = new int[64];
+        y = 0;
+        Wi = llenaPesos();
+        Xi = new int[64];
+        d = new int[21];
+        temp = new int[21];
+    }
+    
+      public Perceptron(String nombre) {
+        this.nombre  = nombre;
         String ruta = "C:\\Users\\daayt\\Documents\\Maestria MCA1\\3er cuatrimestre\\Computo inteligente\\TRAIN.txt";
         Dataset = new dataset2(ruta);
         Funcion_OR = new int[1698];
@@ -58,19 +75,124 @@ public class Perceptron {
     
     
     //metodos
-    public int[] creaNeurona(String name) {
+//     public int creaNeurona2() {
+//        int d= new int[21];
+//        switch (nombre) {
+//            case "A":
+//                 System.out.println("--A--");
+//                
+//                break;
+//
+//            case "B":
+//               System.out.println("--B--");
+//                 for (int i = 0; i < d.length; i++) {
+//                    if (i==1 || i==8 || i==15) {
+//                        d[i]=1;
+//                      //  System.out.println("SALIDA_desaeada: "+d[i]);
+//                    }else{
+//                        d[i]=-1;
+//                      //  System.out.println("SALIDA_desaeada: "+d[i]);
+//                    }
+//                }
+////                int[] dB = {-1, 1, -1, -1, -1, -1, -1,//B1
+////                    -1, 1, -1, -1, -1, -1, -1,//B2
+////                    -1, 1, -1, -1, -1, -1, -1};//B3
+//                break;
+//            case "C":
+//                System.out.println("--C--");
+//                 for (int i = 0; i < d.length; i++) {
+//                    if (i==2 || i==9 || i==16) {
+//                        d[i]=1;
+//                      //  System.out.println("SALIDA_desaeada: "+d[i]);
+//                    }else{
+//                        d[i]=-1;
+//                     //   System.out.println("SALIDA_desaeada: "+d[i]);
+//                    }
+//                }
+////                int[] dC = {-1, -1, 1, -1, -1, -1, -1,//C1
+////                    -1, -1, 1, -1, -1, -1, -1,//C2
+////                    -1, -1, 1, -1, -1, -1, -1};//C3
+//                break;
+//            case "D":
+//                System.out.println("--D--");
+//                 for (int i = 0; i < d.length; i++) {
+//                    if (i==3 || i==10 || i==17) {
+//                        d[i]=1;
+//                       // System.out.println("SALIDA_desaeada: "+d[i]);
+//                    }else{
+//                        d[i]=-1;
+//                        System.out.println("hola soy d**************************************");
+//                        //System.out.println("SALIDA_desaeada: "+d[i]);
+//                    }
+//                }
+////                int[] dD = {-1, -1, -1, 1, -1, -1, -1,//D1
+////                    -1, -1, -1, 1, -1, -1, -1,//D2
+////                    -1, -1, -1, 1, -1, -1, -1};//D3
+////                break;
+//            case "E":
+//                System.out.println("--E--");
+//                 for (int i = 0; i < d.length; i++) {
+//                    if (i==4 || i==11 || i==18) {
+//                        d[i]=1;
+//                      //  System.out.println("SALIDA_desaeada: "+d[i]);
+//                    }else{
+//                        d[i]=-1;
+//                       // System.out.println("SALIDA_desaeada: "+d[i]);
+//                    }
+//                }
+////                int[] dE = {-1, -1, -1, -1, 1, -1, -1,//E1
+////                    -1, -1, -1, -1, 1, -1, -1,//E2
+////                    -1, -1, -1, -1, 1, -1, -1};//E3
+//                break;
+//            case "J":
+//                System.out.println("--J--");
+//                 for (int i = 0; i < d.length; i++) {
+//                    if (i==5 || i==12 || i==19) {
+//                        d[i]=1;
+//                     //   System.out.println("SALIDA_desaeada: "+d[i]);
+//                    }else{
+//                        d[i]=-1;
+//                   //     System.out.println("SALIDA_desaeada: "+d[i]);
+//                    }
+//                }
+////                int[] dJ = {-1, -1, -1, -1, -1, 1, -1,//J1
+////                    -1, -1, -1, -1, -1, 1, -1,//J2
+////                    -1, -1, -1, -1, -1, 1, -1};//J3
+//                break;
+//            case "K":
+//                System.out.println("--K--");
+//                 for (int i = 0; i < d.length; i++) {
+//                    if (i==6 || i==13 || i==20) {
+//                        d[i]=1;
+//                   //     System.out.println("SALIDA_desaeada: "+d[i]);
+//                    }else{
+//                        d[i]=-1;
+//                     //   System.out.println("SALIDA_desaeada: "+d[i]);
+//                    }
+//                }
+////                int[] dK = {1, -1, -1, -1, -1, -1, 1,//K1
+////                    -1, -1, -1, -1, -1, -1, 1,//K2
+////                    -1, -1, -1, -1, -1, -1, 1};//K3
+//                break;
+//            default:
+//                throw new AssertionError();
+//        }
+//        return d;
+//    }
+//    
+    public int[] creaNeurona() {
         int[] d= new int[21];
-        switch (name) {
+        switch (nombre) {
             case "A":
                  System.out.println("--A--");
                  int c=0;
                 for (int i = 0; i < d.length; i++) {
                     if (i==0 || i==7 || i==14) {
                         d[i]=1; c++;
-                      //  System.out.println("SALIDA_desaeada: "+d[i]);
+                        System.out.println("SALIDA_desaeada: "+d[i]);
                     }else{
                         d[i]=-1; c++;
-                        //System.out.println("SALIDA_desaeada: "+d[i]);
+                        System.out.println("SALIDA_desaeada: "+d[i]);
                     }
                 }
                 System.out.println("Contador: "+c);
@@ -117,6 +239,7 @@ public class Perceptron {
                         System.out.println("SALIDA_desaeada: "+d[i]);
                     }else{
                         d[i]=-1;
+                       // System.out.println("hola soy d**************************************");
                         System.out.println("SALIDA_desaeada: "+d[i]);
                     }
                 }
@@ -132,7 +255,7 @@ public class Perceptron {
                         System.out.println("SALIDA_desaeada: "+d[i]);
                     }else{
                         d[i]=-1;
-                        System.out.println("SALIDA_desaeada: "+d[i]);
+                       System.out.println("SALIDA_desaeada: "+d[i]);
                     }
                 }
 //                int[] dE = {-1, -1, -1, -1, 1, -1, -1,//E1
@@ -177,29 +300,39 @@ public class Perceptron {
     public void entrenamiento2(){//para la neurona A
         String[] ids= {"A", "B", "C", "D", "E", "J", "K"};
         Funcion_OR = Dataset.readTxt2();
-        int c=0;
-        while (true ) {
+        int c=0;int x;
+        while (c < 1 ) {//epocas de 21 patrones
            
             
         
-      //  for (int x = 0; x < 21; x++) {
-            for (int i = 0; i < Wi.length; i++) {
+        for (x = 0; x < 21; x++) {//21 patrones
+            for (int i = 0; i < Wi.length; i++) {//1 patron
+                if (i==0) {
+                    Xi[i] = umbral;//asigno el umbral antes de iniciar el arreglo
+                    Net += Xi[i]*Wi[i];
+                }
                 Xi[i] = Funcion_OR[i];
                 Net += Xi[i] * Wi[i];
             }
            // System.out.println("-----PATRON"+c+"-----");
-            System.out.println("Net: "+Net);
+          
             y = funcion_escalon(Net);
+            //if (bandera==true) {
+            System.out.println("Net: "+Net);
             System.out.println("Y: "+y);
-            d = creaNeurona("A");
+           // }
             
-            IncrementoW2 = getIncrementos(0, 1, d, y); 
+           // d = creaNeurona("A");
+             d = creaNeurona();
+            IncrementoW2 = getIncrementos(x, 1, d, y); 
             Wi = nuevosPesos(IncrementoW2);
-        //}
+        }
             System.out.println("-----Termina la Epoca "+c+"-----");
-            if (temp[0]==d[0]) {
-                break;
-            }
+//            if (temp[x]==d[x]) {
+//                System.out.println("el resultado de la clasificacion es: "+temp[x]);
+                  //bandera = true;
+//                break;
+//            }
         c++;
     }
 //    public void entrenamiento() {//[1698][8], aqui debe recibir el umbral
@@ -242,7 +375,7 @@ public class Perceptron {
                 System.out.println("Incrementos: "+IncrementoW[i]);
                 System.out.println("Xi: "+Xi[i]);
         }
-        temp[contador]=y;
+       // temp[contador]=y;// por patron 21 veces
       return IncrementoW;     
     }
     
